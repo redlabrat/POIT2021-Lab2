@@ -4,7 +4,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import by.brstu.poit.redlabrat.myapplication.databinding.ActivityMainBinding
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), PlanetListAdapter.OnPlanetItemClick {
 
     private lateinit var binding: ActivityMainBinding
 
@@ -15,6 +15,13 @@ class MainActivity : AppCompatActivity() {
 
         supportFragmentManager.beginTransaction()
             .add(R.id.contentContainer, ListFragment())
+            .commit()
+    }
+
+    override fun onPlanetClick(planet: String) {
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.contentContainer, DetailsFragment())
+            .addToBackStack(null)
             .commit()
     }
 }

@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.LinearLayoutManager
 import by.brstu.poit.redlabrat.myapplication.databinding.FragmentListBinding
 
 class ListFragment : Fragment() {
@@ -29,8 +28,8 @@ class ListFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.recyclerView.adapter = PlanetListAdapter(listOfPlanets)
-//        binding.recyclerView.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+        binding.recyclerView.adapter = PlanetListAdapter(listOfPlanets,
+            requireActivity() as? PlanetListAdapter.OnPlanetItemClick)
         binding.loadingProgress.isVisible = false
     }
 }
