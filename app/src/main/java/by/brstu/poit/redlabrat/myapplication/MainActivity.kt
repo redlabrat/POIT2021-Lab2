@@ -20,7 +20,7 @@ class MainActivity : AppCompatActivity(), PlanetListAdapter.OnPlanetItemClick {
 
     override fun onPlanetClick(planet: String) {
         supportFragmentManager.beginTransaction()
-            .replace(R.id.contentContainer, DetailsFragment())
+            .replace(R.id.contentContainer, DetailsFragment.newInstance(planet))
             .addToBackStack(null)
             .commit()
     }
