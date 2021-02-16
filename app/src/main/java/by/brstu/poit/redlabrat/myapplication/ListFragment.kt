@@ -19,4 +19,9 @@ class ListFragment : Fragment() {
         binding = FragmentListBinding.inflate(inflater)
         return binding.root
     }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        binding.recyclerView.adapter
+    }
 }
