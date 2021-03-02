@@ -7,12 +7,17 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
 class PlanetListAdapter(
-    val items: List<String>,
+    var items: List<String>,
     val onItemClickListener: OnPlanetItemClick?
 ) : RecyclerView.Adapter<PlanetListAdapter.PlanetViewHolder>() {
 
     interface OnPlanetItemClick {
         fun onPlanetClick(planet: String)
+    }
+
+    fun setNewItems(newItems: List<String>) {
+        items = newItems
+        notifyDataSetChanged()
     }
 
     class PlanetViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
