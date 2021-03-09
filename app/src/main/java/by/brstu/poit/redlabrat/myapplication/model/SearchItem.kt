@@ -1,12 +1,16 @@
 package by.brstu.poit.redlabrat.myapplication.model
 
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
 
+@Entity(tableName = "search_item")
 data class SearchItem(
         @SerializedName("Title")
         val title: String,
         @SerializedName("Year")
         val year: String,
+        @PrimaryKey
         @SerializedName("imdbID")
         val imdbId: String,
         @SerializedName("Type")

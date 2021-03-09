@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import by.brstu.poit.redlabrat.myapplication.databinding.FragmentListBinding
@@ -30,23 +31,40 @@ class ListFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        adapter = PlanetListAdapter(listOfPlanets,
+        adapter = PlanetListAdapter(emptyList(),
             requireActivity() as? PlanetListAdapter.OnPlanetItemClick)
         binding.recyclerView.adapter = adapter
         binding.loadingProgress.isVisible = false
-        getMovies("test")
+        binding.buttonSearch.setOnClickListener {
+            getMovies("test")
+        }
     }
 
     private fun getMovies(searchKey: String) {
         (activity?.application as? TestApp)?.service?.apply {
+            binding.loadingProgress.isVisible = true
             searchMovie(searchKey)
                 .subscribeOn(Schedulers.io())
+                .observeOn(Schedulers.computation())
+                .map {
+                    if (it != null) {
+                        (activity?.application as? TestApp)?.movieDao?.apply {
+                            for (movie in it.moviesList) {
+                                saveMovie(movie)
+                            }
+                        }
+                    }
+                    it
+                }
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe { result, error ->
                     if (result != null && error == null) {
                         val newList = result.moviesList.map { it.title }
                         adapter?.setNewItems(newList)
+                    } else {
+                        Toast.makeText(context, error.localizedMessage, Toast.LENGTH_LONG).show()
                     }
+                    binding.loadingProgress.isVisible = false
                 }
         }
     }
