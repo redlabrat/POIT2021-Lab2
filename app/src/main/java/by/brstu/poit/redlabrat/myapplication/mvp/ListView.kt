@@ -8,4 +8,6 @@ import moxy.viewstate.strategy.StateStrategyType
 @StateStrategyType(AddToEndSingleStrategy::class)
 interface ListView : MvpView {
     fun showListOfMovies(items: List<SearchItem>)
+
+    fun showHideLoading(isProgressVisible: Boolean)
 }

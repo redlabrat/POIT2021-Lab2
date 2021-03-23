@@ -37,6 +37,6 @@ class TestApp : Application() {
 
 
     private fun provideListPresenter() {
-        listPresenter = ListPresenter(service)
+        listPresenter = ListPresenter(service, movieDao)
     }
 }

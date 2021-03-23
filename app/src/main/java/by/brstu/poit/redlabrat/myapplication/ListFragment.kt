@@ -15,19 +15,6 @@ import moxy.presenter.ProvidePresenter
 
 class ListFragment : MvpAppCompatFragment(), ListView {
 
-    companion object {
-        val listOfPlanets = listOf<String>(
-            "Mercury",
-            "Venus",
-            "Earth",
-            "Mars",
-            "Jupiter",
-            "Saturn",
-            "Uranus",
-            "Neptune"
-        )
-    }
-
     @InjectPresenter
     lateinit var presenter: ListPresenter
 
@@ -58,8 +45,7 @@ class ListFragment : MvpAppCompatFragment(), ListView {
         binding.recyclerView.adapter = adapter
         binding.loadingProgress.isVisible = false
         binding.buttonSearch.setOnClickListener {
-            binding.loadingProgress.isVisible = true
-            presenter.getMovies("test")
+            presenter.getMovies(binding.searchText.text.toString())
         }
     }
 
@@ -69,7 +55,12 @@ class ListFragment : MvpAppCompatFragment(), ListView {
         binding.loadingProgress.isVisible = false
     }
 
- /*   private fun getMovies(searchKey: String) {
+    override fun showHideLoading(isProgressVisible: Boolean) {
+        binding.loadingProgress.isVisible = isProgressVisible
+        binding.recyclerView.isVisible = !isProgressVisible
+    }
+
+    /*   private fun getMovies(searchKey: String) {
         (activity?.application as? TestApp)?.service?.apply {
             binding.loadingProgress.isVisible = true
             searchMovie(searchKey)

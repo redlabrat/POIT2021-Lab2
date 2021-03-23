@@ -12,4 +12,6 @@ interface MovieSearchDao {
 
     @Insert
     fun saveMovie(movie: SearchItem)
+    @Insert
+    fun saveMoviesList(items: List<SearchItem>)
 }
