@@ -4,17 +4,37 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.core.view.isVisible
-import androidx.fragment.app.Fragment
 import by.brstu.poit.redlabrat.myapplication.databinding.FragmentListBinding
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
-import io.reactivex.rxjava3.schedulers.Schedulers
+import by.brstu.poit.redlabrat.myapplication.model.SearchItem
+import by.brstu.poit.redlabrat.myapplication.mvp.ListPresenter
+import by.brstu.poit.redlabrat.myapplication.mvp.ListView
+import moxy.MvpAppCompatFragment
+import moxy.presenter.InjectPresenter
+import moxy.presenter.ProvidePresenter
 
-class ListFragment : Fragment() {
+class ListFragment : MvpAppCompatFragment(), ListView {
 
     companion object {
-        val listOfPlanets = listOf<String>("Mercury", "Venus", "Earth", "Mars", "Jupiter", "Saturn", "Uranus", "Neptune")
+        val listOfPlanets = listOf<String>(
+            "Mercury",
+            "Venus",
+            "Earth",
+            "Mars",
+            "Jupiter",
+            "Saturn",
+            "Uranus",
+            "Neptune"
+        )
+    }
+
+    @InjectPresenter
+    lateinit var presenter: ListPresenter
+
+    @ProvidePresenter
+    fun providePresenter(): ListPresenter {
+        val app = (requireActivity().application as TestApp)
+        return app.listPresenter
     }
 
     private lateinit var binding: FragmentListBinding
@@ -31,16 +51,25 @@ class ListFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        adapter = PlanetListAdapter(emptyList(),
-            requireActivity() as? PlanetListAdapter.OnPlanetItemClick)
+        adapter = PlanetListAdapter(
+            emptyList(),
+            requireActivity() as? PlanetListAdapter.OnPlanetItemClick
+        )
         binding.recyclerView.adapter = adapter
         binding.loadingProgress.isVisible = false
         binding.buttonSearch.setOnClickListener {
-            getMovies("test")
+            binding.loadingProgress.isVisible = true
+            presenter.getMovies("test")
         }
     }
 
-    private fun getMovies(searchKey: String) {
+    override fun showListOfMovies(items: List<SearchItem>) {
+        val newList = items.map { it.title }
+        adapter?.setNewItems(newList)
+        binding.loadingProgress.isVisible = false
+    }
+
+ /*   private fun getMovies(searchKey: String) {
         (activity?.application as? TestApp)?.service?.apply {
             binding.loadingProgress.isVisible = true
             searchMovie(searchKey)
@@ -67,5 +96,5 @@ class ListFragment : Fragment() {
                     binding.loadingProgress.isVisible = false
                 }
         }
-    }
+    }*/
 }

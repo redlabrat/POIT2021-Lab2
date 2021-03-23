@@ -14,7 +14,7 @@ class MainActivity : AppCompatActivity(), PlanetListAdapter.OnPlanetItemClick {
         setContentView(binding.root)
 
         supportFragmentManager.beginTransaction()
-            .add(R.id.contentContainer, ListFragment())
+            .replace(R.id.contentContainer, ListFragment())
             .commit()
     }
 

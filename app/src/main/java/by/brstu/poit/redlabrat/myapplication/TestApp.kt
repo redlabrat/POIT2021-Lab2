@@ -5,6 +5,7 @@ import androidx.room.Room
 import by.brstu.poit.redlabrat.myapplication.api.OmdbApi
 import by.brstu.poit.redlabrat.myapplication.db.MovieSearchDao
 import by.brstu.poit.redlabrat.myapplication.db.MovieSearchDb
+import by.brstu.poit.redlabrat.myapplication.mvp.ListPresenter
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava3.RxJava3CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
@@ -13,6 +14,7 @@ class TestApp : Application() {
 
     lateinit var service: OmdbApi
     lateinit var movieDao: MovieSearchDao
+    lateinit var listPresenter: ListPresenter
 
     override fun onCreate() {
         super.onCreate()
@@ -30,7 +32,11 @@ class TestApp : Application() {
         )
             .build()
             .getMovieDao()
+        provideListPresenter()
     }
 
 
+    private fun provideListPresenter() {
+        listPresenter = ListPresenter(service)
+    }
 }
